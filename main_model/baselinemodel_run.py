@@ -3,6 +3,12 @@ import pandas as pd
 from nelson_siegel import COLUMNS, load_yields, estimate_betas, calculate_errors, MATURITIES, LAMBDA
 from ar_forecast import fit_ar_coef, forecast_betas, forecast_yield
 
+from datetime import date, timedelta
+import os
+from dotenv import load_dotenv
+from fredapi import Fred
+
+
 # Building the Runable Function First 
 # orecast the yield curve for the next h months from one base month
 def baseline_main(yields: pd.DataFrame, base_month: str, h: int) -> pd.DataFrame:
@@ -27,7 +33,7 @@ def baseline_main(yields: pd.DataFrame, base_month: str, h: int) -> pd.DataFrame
     if not base.is_month_end: # Checking if it is actually a valid month-end date
         raise ValueError(f"{base_month} is not a month-end date, please adjust base_month parameter")
     if base not in yields.index: # Checking if the base month is in the yield data
-        raise ValueError(f"{base_month} is not in the csv_path data, please add or adjust csv_path/base_month parameter")
+        raise ValueError(f"{base_month} is not in the data, please add or adjust csv_path/base_month parameter")
 
     
     # FORECASTING STEPS -----------------------
@@ -58,10 +64,55 @@ def baseline_main(yields: pd.DataFrame, base_month: str, h: int) -> pd.DataFrame
     return forecasted_yielddf
 
 
+
+# Pulling Treasury yield from FRED (copy and pasted pull_yields.py)
+def pull_yields(START:str = "1996-01-01", api_key:str = None) -> pd.DataFrame:
+    # Returns:
+    # monthly yields: rows = month-end dates, columns = maturities (as text)
+
+    # Check if a key was given
+    if not api_key:
+        raise ValueError("No FRED API key given. Please input a valid api_key.")
+    
+    fred = Fred(api_key=api_key)
+
+    today = pd.Timestamp.today().normalize() # today's date but at midnight
+    # Set end date be the most recent month-end date
+    if not today.is_month_end: # if today is not a month end date
+        end = today - pd.Timedelta(days=today.day) # go back to the most recent month end
+    else: 
+        end = today
+    END = end.strftime("%Y-%m-%d") # convert to string (to match the format of the table)
+    
+    # maturity in months -> FRED series id
+    # note: 3 and 6 months don't pay coupon thus just keep the par yields as zero-coupon yields
+    SERIES = {
+    3: "DGS3MO", 6: "DGS6MO", 12: "THREEFY1",
+    24: "THREEFY2", 36: "THREEFY3", 60: "THREEFY5", 84: "THREEFY7",
+    120: "THREEFY10",
+    }
+    
+    # pull daily data for every maturity
+    daily = pd.DataFrame({
+    str(m): fred.get_series(sid, observation_start=START, observation_end=END)
+    for m, sid in SERIES.items()
+    })
+    daily.index.name = "date"
+    
+    # convert to month-end snapshots
+    monthly = daily.resample("ME").last()  # if you get an error, change "ME" to "M"
+    monthly.index.name = "date"
+
+    return monthly
+
+    
+
+
+
 def main():
 
     # Read the csv
-     data = pd.read_csv(r"C:\Users\milly\OneDrive\文档\Research\Fall 2026 FARMSA\treasury_yields_1996_2026.csv", index_col="date", parse_dates=True)
+     data = pull_yields(api_key="...") #PLEASE INPUT THE FRED API KEY
 
      # CHECKS and CLEANING DATA ----------------------
      # Check if all required columns are present in the data
