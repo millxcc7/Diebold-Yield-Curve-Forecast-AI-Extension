@@ -112,7 +112,7 @@ def pull_yields(START:str = "1996-01-01", api_key:str = None) -> pd.DataFrame:
 def main():
 
     # Read the csv
-     data = pull_yields(api_key="5eb22df42d3f41aefa70fc73d4dd7e50 ") #PLEASE INPUT THE FRED API KEY
+     data = pull_yields(api_key="...") #PLEASE INPUT THE FRED API KEY
 
      # CHECKS and CLEANING DATA ----------------------
      # Check if all required columns are present in the data

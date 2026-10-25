@@ -16,7 +16,7 @@ from baselinemodel_run import baseline_main, pull_yields
 
 
 # Replace with the FRED API key when running locally.
-API_KEY = "5eb22df42d3f41aefa70fc73d4dd7e50"
+API_KEY = "..."
 
 
 MATURITIES = ["3", "6", "12", "24", "36", "60", "84", "120"]
@@ -277,4 +277,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-    
