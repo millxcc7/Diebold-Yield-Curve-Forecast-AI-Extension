@@ -112,7 +112,7 @@ def pull_yields(START:str = "1996-01-01", api_key:str = None) -> pd.DataFrame:
 def main():
 
     # Read the csv
-     data = pull_yields(api_key="...") #PLEASE INPUT THE FRED API KEY
+     data = pull_yields(api_key="5eb22df42d3f41aefa70fc73d4dd7e50 ") #PLEASE INPUT THE FRED API KEY
 
      # CHECKS and CLEANING DATA ----------------------
      # Check if all required columns are present in the data
@@ -131,8 +131,11 @@ def main():
      current = data.loc["2025-10-31":"2026-09-30"]
      return result, current
 
-results, current = main()
-print("Forecasted yields:")
-print(results.round(3))
-print("\nActual yields:")
-print(current.round(3))
+if __name__ == "__main__":
+    results, current = main()
+
+    print("Forecasted yields:")
+    print(results.round(3))
+
+    print("\nActual yields:")
+    print(current.round(3))
