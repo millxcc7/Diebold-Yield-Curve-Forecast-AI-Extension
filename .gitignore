@@ -2,3 +2,5 @@
 .venv/
 __pycache__/
 data/*.csv
+!data/fomc_statements.csv
+!data/fomc_scores.csv
