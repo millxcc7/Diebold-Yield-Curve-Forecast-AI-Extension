@@ -10,15 +10,12 @@ MATURITIES = np.array([3, 6, 12, 24, 36, 60, 84, 120])
 # Convert maturities into strings to match CSV column names
 COLUMNS = [str(m) for m in MATURITIES]
 
-
 # 1. Process yield data:
 
 def load_yields():
 
     # Read monthly yield data already prepared by pull_yields.py
     yields = pd.read_csv("data/treasury_yields_1996_2026.csv", index_col="date", parse_dates=True)
-
-
     yields = yields[COLUMNS]
 
     # Remove months with missing observations
@@ -57,7 +54,6 @@ def ns_loadings(maturities, lam):
 
 
 # 3. Betas estimation (OLS)
-
 
 def estimate_betas(yields):
 
@@ -167,9 +163,4 @@ def main():
 
     # Display any missing months
     print("\nMissing months:", list(missing))
-
-    # Check for missing months before AR forecasting
-    if len(missing) > 0:
-        print("WARNING: Missing months may affect AR forecasts.")
-
-    print("\nNelson-Siegel OLS completed successfully!")
+    
