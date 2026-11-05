@@ -368,3 +368,4 @@ month,sentiment_score,statement_date,new_statement,months_since_statement
 2026-07-31,0.5,2026-07-29,True,0
 2026-08-31,0.5,2026-07-29,False,1
 2026-09-30,0.5,2026-09-16,True,0
+2026-10-31,0.5,2026-10-28,True,0

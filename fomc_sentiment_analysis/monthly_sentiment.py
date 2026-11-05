@@ -5,6 +5,10 @@ Run from the repository root:
     python3 -B -m fomc_sentiment_analysis.monthly_sentiment --yields path/to/yields.csv
     python3 -B -m fomc_sentiment_analysis.monthly_sentiment --start 1995-12-01 --end 2026-09-30
 
+Without calendar options, extend the output through the latest scored
+statement's month. That month may still be in progress. Explicit --yields or
+--start/--end options keep the requested historical calendar.
+
 """
 
 import argparse
@@ -120,6 +124,10 @@ def main():
     if args.yields is not None and (args.start is not None or args.end is not None):
         parser.error("Use either --yields or --start/--end.")
 
+    # 1. Read scores written by check_new_statement.py or the historical scorer.
+    scores = read_scores(args.scores)
+
+    # 2. Honor an explicit calendar, or prepare the default yield calendar.
     if args.start is not None or args.end is not None:
         months = calendar_months(args.start or DEFAULT_START, args.end or DEFAULT_END)
     elif args.yields is not None or YIELDS_PATH.exists():
@@ -131,7 +139,17 @@ def main():
         )
         months = calendar_months(DEFAULT_START, DEFAULT_END)
 
-    rows = build_monthly_sentiment(read_scores(args.scores), months)
+    # 3. For automatic updates, include new statement months even if the yield
+    #    file or fallback calendar still ends at the historical cutoff.
+    if args.yields is None and args.start is None and args.end is None and scores and months:
+        latest = max(released for released, _ in scores)
+        month_end = latest.replace(day=calendar.monthrange(latest.year, latest.month)[1])
+        last_month = max(months)
+        if last_month < month_end:
+            months += [month for month in calendar_months(last_month, month_end) if month > last_month]
+
+    # 4. Reuse the existing aggregation rules and write the monthly CSV.
+    rows = build_monthly_sentiment(scores, months)
     with args.output.open("w", newline="", encoding="utf-8") as output:
         writer = csv.DictWriter(output, fieldnames=COLUMNS)
         writer.writeheader()

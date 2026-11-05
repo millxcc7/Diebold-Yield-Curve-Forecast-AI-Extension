@@ -124,65 +124,71 @@ def get_statement_text(url):
     return clean_text(main.get_text("\n", strip=True))
 
 
-# ---------- 1. find statement urls ----------
-found, missing = [], []
+def main():
+    """Run historical collection only when this file is executed directly."""
+    # ---------- 1. find statement urls ----------
+    found, missing = [], []
 
-for year in range(FIRST_YEAR, LAST_HIST_YEAR + 1):
-    print("Year", year)
-    for title, link in links_from_year_page(year):
-        if link is None:
-            missing.append({"meeting": title, "meeting_end_date": meeting_end_date(title)})
-        else:
-            d = date_from_url(link)
-            if pd.isna(d):
-                d = meeting_end_date(title)
-            found.append({"release_date": d, "url": link})
+    for year in range(FIRST_YEAR, LAST_HIST_YEAR + 1):
+        print("Year", year)
+        for title, link in links_from_year_page(year):
+            if link is None:
+                missing.append({"meeting": title, "meeting_end_date": meeting_end_date(title)})
+            else:
+                d = date_from_url(link)
+                if pd.isna(d):
+                    d = meeting_end_date(title)
+                found.append({"release_date": d, "url": link})
 
-if INCLUDE_2021_PLUS:
-    print("Calendars page (2021+)")
-    soup = get_soup(f"{BASE}/monetarypolicy/fomccalendars.htm")
-    for a in soup.find_all("a", href=True):
-        m = re.search(r"monetary(\d{8})a\.htm", a["href"])
-        if m and m.group(1) != "20250822":
-            found.append({"release_date": pd.to_datetime(m.group(1), format="%Y%m%d"),
-                          "url": urljoin(BASE, a["href"])})
+    if INCLUDE_2021_PLUS:
+        print("Calendars page (2021+)")
+        soup = get_soup(f"{BASE}/monetarypolicy/fomccalendars.htm")
+        for a in soup.find_all("a", href=True):
+            m = re.search(r"monetary(\d{8})a\.htm", a["href"])
+            if m and m.group(1) != "20250822":
+                found.append({"release_date": pd.to_datetime(m.group(1), format="%Y%m%d"),
+                              "url": urljoin(BASE, a["href"])})
 
-urls = pd.DataFrame(found).drop_duplicates("url")
-urls = urls[(urls["release_date"] >= START) & (urls["release_date"] <= END)]
+    urls = pd.DataFrame(found).drop_duplicates("url")
+    urls = urls[(urls["release_date"] >= START) & (urls["release_date"] <= END)]
 
-# Exclude liquidity-only announcements from sentiment scoring
-EXCLUDE_DATES = pd.to_datetime(["2007-08-10", "2008-03-11", "2010-05-09"])
-urls = urls[~urls["release_date"].isin(EXCLUDE_DATES)]
+    # Exclude liquidity-only announcements from sentiment scoring
+    EXCLUDE_DATES = pd.to_datetime(["2007-08-10", "2008-03-11", "2010-05-09"])
+    urls = urls[~urls["release_date"].isin(EXCLUDE_DATES)]
 
-# ---------- 2. download only what we don't have yet ----------
-if os.path.exists(OUT_PATH):
-    old = pd.read_csv(OUT_PATH, parse_dates=["release_date"])
-else:
-    old = pd.DataFrame(columns=["release_date", "url", "text"])
+    # ---------- 2. download only what we don't have yet ----------
+    if os.path.exists(OUT_PATH):
+        old = pd.read_csv(OUT_PATH, parse_dates=["release_date"])
+    else:
+        old = pd.DataFrame(columns=["release_date", "url", "text"])
 
-todo = urls[~urls["url"].isin(old["url"])]
-print(f"\n{len(urls)} statements found, {len(todo)} new to download")
+    todo = urls[~urls["url"].isin(old["url"])]
+    print(f"\n{len(urls)} statements found, {len(todo)} new to download")
 
-new_rows = []
-for _, row in todo.iterrows():
-    try:
-        text = get_statement_text(row["url"])
-    except Exception as e:
-        print("FAILED:", row["url"], e)
-        continue
-    new_rows.append({"release_date": row["release_date"], "url": row["url"], "text": text})
-    print("  got", row["release_date"].date())
+    new_rows = []
+    for _, row in todo.iterrows():
+        try:
+            text = get_statement_text(row["url"])
+        except Exception as e:
+            print("FAILED:", row["url"], e)
+            continue
+        new_rows.append({"release_date": row["release_date"], "url": row["url"], "text": text})
+        print("  got", row["release_date"].date())
 
-frames = [f for f in (old, pd.DataFrame(new_rows)) if len(f)]
-df = pd.concat(frames, ignore_index=True) if frames else old
-df = df.drop_duplicates("url").sort_values("release_date").reset_index(drop=True)
-df.to_csv(OUT_PATH, index=False)
-pd.DataFrame(missing).to_csv(MISSING_PATH, index=False)
+    frames = [f for f in (old, pd.DataFrame(new_rows)) if len(f)]
+    df = pd.concat(frames, ignore_index=True) if frames else old
+    df = df.drop_duplicates("url").sort_values("release_date").reset_index(drop=True)
+    df.to_csv(OUT_PATH, index=False)
+    pd.DataFrame(missing).to_csv(MISSING_PATH, index=False)
 
-# ---------- 3. summary ----------
-words = df["text"].fillna("").str.split().str.len()
-print("\nStatements saved:", len(df))
-print("Meetings with no statement:", len(missing))
-print("Shortest / longest (words):", words.min(), "/", words.max())
-print("\nStatements per year:")
-print(df["release_date"].dt.year.value_counts().sort_index().to_string())
+    # ---------- 3. summary ----------
+    words = df["text"].fillna("").str.split().str.len()
+    print("\nStatements saved:", len(df))
+    print("Meetings with no statement:", len(missing))
+    print("Shortest / longest (words):", words.min(), "/", words.max())
+    print("\nStatements per year:")
+    print(df["release_date"].dt.year.value_counts().sort_index().to_string())
+
+
+if __name__ == "__main__":
+    main()
