@@ -119,7 +119,7 @@ def ml_info_collector(base_month: str, api_key: str, first_origin: str = "2001-0
 
 
 if __name__ == "__main__":
-    result = ml_info_collector("2015-01-31", api_key = os.getenv("FRED_API_KEY")) # PLEASE INPUT THE FRED API KEY
+    result = ml_info_collector("2026-10-31", api_key = os.getenv("FRED_API_KEY")) # PLEASE INPUT THE FRED API KEY
     result.to_csv("data/MLdatabase.csv", index=False) # printing out to csv  
 
     print(result.head(13).round(3))   # first origin's 12 rows + the start of the next
