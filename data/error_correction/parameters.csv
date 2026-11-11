@@ -1,0 +1,7 @@
+config_id,objective,booster,tree_method,device,learning_rate,random_state,n_jobs,subsample,colsample_bytree,min_child_weight,gamma,reg_alpha,reg_lambda,max_bin,base_score,max_depth,n_estimators,training_cutoff,n_training_rows
+d2_n100_lr005,reg:squarederror,gbtree,hist,cpu,0.05,42,1,1.0,1.0,1.0,0.0,0.0,1.0,256,0.0,2,100,2026-09-30,3630
+d2_n150_lr005,reg:squarederror,gbtree,hist,cpu,0.05,42,1,1.0,1.0,1.0,0.0,0.0,1.0,256,0.0,2,150,2026-09-30,3630
+d2_n200_lr005,reg:squarederror,gbtree,hist,cpu,0.05,42,1,1.0,1.0,1.0,0.0,0.0,1.0,256,0.0,2,200,2026-09-30,3630
+d3_n100_lr005,reg:squarederror,gbtree,hist,cpu,0.05,42,1,1.0,1.0,1.0,0.0,0.0,1.0,256,0.0,3,100,2026-09-30,3630
+d3_n150_lr005,reg:squarederror,gbtree,hist,cpu,0.05,42,1,1.0,1.0,1.0,0.0,0.0,1.0,256,0.0,3,150,2026-09-30,3630
+d3_n200_lr005,reg:squarederror,gbtree,hist,cpu,0.05,42,1,1.0,1.0,1.0,0.0,0.0,1.0,256,0.0,3,200,2026-09-30,3630

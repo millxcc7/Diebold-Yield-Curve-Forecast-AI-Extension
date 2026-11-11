@@ -4,3 +4,5 @@ python-dotenv
 requests
 beautifulsoup4
 google-genai
+xgboost==3.4.1
+scikit-learn==1.9.1

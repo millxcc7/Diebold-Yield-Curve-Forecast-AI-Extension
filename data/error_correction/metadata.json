@@ -1,0 +1,208 @@
+{
+  "created_at_utc": "2026-11-11T06:23:00.847742+00:00",
+  "dataset": {
+    "file": "/Users/joeyxu/Desktop/Diebold Yield Curve Forecast AI Extension/Diebold-Yield-Curve-Forecast-AI-Extension/data/MLdatabase.csv",
+    "sha256": "73a10b4ae3191a5e75b1baee02eace4c69e567b1eb86fbc98360d8fd9fbdfe4e",
+    "n_rows": 3642
+  },
+  "features": [
+    "k",
+    "beta1_origin",
+    "beta2_origin",
+    "beta3_origin",
+    "inflation",
+    "unemployment_rate",
+    "unemployment_chg",
+    "fed_funds_rate",
+    "fed_funds_chg_3m",
+    "fed_funds_chg_6m",
+    "sentiment_score"
+  ],
+  "targets": [
+    "error_beta1",
+    "error_beta2",
+    "error_beta3"
+  ],
+  "error_definition": "actual_beta - AR_forecast_beta",
+  "prediction_units": "beta factor units (percentage points)",
+  "training": {
+    "cutoff": "2026-09-30",
+    "rule": "target <= forecast_origin",
+    "n_rows": 3630,
+    "first_realized_target": "2001-02-28",
+    "last_realized_target": "2026-09-30"
+  },
+  "prediction": {
+    "origin": "2026-09-30",
+    "horizon": 12,
+    "first_target": "2026-10-31",
+    "last_target": "2027-09-30"
+  },
+  "seed": 42,
+  "versions": {
+    "python": "3.13.5",
+    "numpy": "2.5.4",
+    "pandas": "3.1.1",
+    "xgboost": "3.4.1",
+    "scikit-learn": "1.9.1"
+  },
+  "configurations": {
+    "d2_n100_lr005": {
+      "parameters": {
+        "objective": "reg:squarederror",
+        "booster": "gbtree",
+        "tree_method": "hist",
+        "device": "cpu",
+        "learning_rate": 0.05,
+        "random_state": 42,
+        "n_jobs": 1,
+        "subsample": 1.0,
+        "colsample_bytree": 1.0,
+        "min_child_weight": 1.0,
+        "gamma": 0.0,
+        "reg_alpha": 0.0,
+        "reg_lambda": 1.0,
+        "max_bin": 256,
+        "base_score": 0.0,
+        "max_depth": 2,
+        "n_estimators": 100
+      },
+      "models": {
+        "error_beta1": "d2_n100_lr005_error_beta1.json",
+        "error_beta2": "d2_n100_lr005_error_beta2.json",
+        "error_beta3": "d2_n100_lr005_error_beta3.json"
+      }
+    },
+    "d2_n150_lr005": {
+      "parameters": {
+        "objective": "reg:squarederror",
+        "booster": "gbtree",
+        "tree_method": "hist",
+        "device": "cpu",
+        "learning_rate": 0.05,
+        "random_state": 42,
+        "n_jobs": 1,
+        "subsample": 1.0,
+        "colsample_bytree": 1.0,
+        "min_child_weight": 1.0,
+        "gamma": 0.0,
+        "reg_alpha": 0.0,
+        "reg_lambda": 1.0,
+        "max_bin": 256,
+        "base_score": 0.0,
+        "max_depth": 2,
+        "n_estimators": 150
+      },
+      "models": {
+        "error_beta1": "d2_n150_lr005_error_beta1.json",
+        "error_beta2": "d2_n150_lr005_error_beta2.json",
+        "error_beta3": "d2_n150_lr005_error_beta3.json"
+      }
+    },
+    "d2_n200_lr005": {
+      "parameters": {
+        "objective": "reg:squarederror",
+        "booster": "gbtree",
+        "tree_method": "hist",
+        "device": "cpu",
+        "learning_rate": 0.05,
+        "random_state": 42,
+        "n_jobs": 1,
+        "subsample": 1.0,
+        "colsample_bytree": 1.0,
+        "min_child_weight": 1.0,
+        "gamma": 0.0,
+        "reg_alpha": 0.0,
+        "reg_lambda": 1.0,
+        "max_bin": 256,
+        "base_score": 0.0,
+        "max_depth": 2,
+        "n_estimators": 200
+      },
+      "models": {
+        "error_beta1": "d2_n200_lr005_error_beta1.json",
+        "error_beta2": "d2_n200_lr005_error_beta2.json",
+        "error_beta3": "d2_n200_lr005_error_beta3.json"
+      }
+    },
+    "d3_n100_lr005": {
+      "parameters": {
+        "objective": "reg:squarederror",
+        "booster": "gbtree",
+        "tree_method": "hist",
+        "device": "cpu",
+        "learning_rate": 0.05,
+        "random_state": 42,
+        "n_jobs": 1,
+        "subsample": 1.0,
+        "colsample_bytree": 1.0,
+        "min_child_weight": 1.0,
+        "gamma": 0.0,
+        "reg_alpha": 0.0,
+        "reg_lambda": 1.0,
+        "max_bin": 256,
+        "base_score": 0.0,
+        "max_depth": 3,
+        "n_estimators": 100
+      },
+      "models": {
+        "error_beta1": "d3_n100_lr005_error_beta1.json",
+        "error_beta2": "d3_n100_lr005_error_beta2.json",
+        "error_beta3": "d3_n100_lr005_error_beta3.json"
+      }
+    },
+    "d3_n150_lr005": {
+      "parameters": {
+        "objective": "reg:squarederror",
+        "booster": "gbtree",
+        "tree_method": "hist",
+        "device": "cpu",
+        "learning_rate": 0.05,
+        "random_state": 42,
+        "n_jobs": 1,
+        "subsample": 1.0,
+        "colsample_bytree": 1.0,
+        "min_child_weight": 1.0,
+        "gamma": 0.0,
+        "reg_alpha": 0.0,
+        "reg_lambda": 1.0,
+        "max_bin": 256,
+        "base_score": 0.0,
+        "max_depth": 3,
+        "n_estimators": 150
+      },
+      "models": {
+        "error_beta1": "d3_n150_lr005_error_beta1.json",
+        "error_beta2": "d3_n150_lr005_error_beta2.json",
+        "error_beta3": "d3_n150_lr005_error_beta3.json"
+      }
+    },
+    "d3_n200_lr005": {
+      "parameters": {
+        "objective": "reg:squarederror",
+        "booster": "gbtree",
+        "tree_method": "hist",
+        "device": "cpu",
+        "learning_rate": 0.05,
+        "random_state": 42,
+        "n_jobs": 1,
+        "subsample": 1.0,
+        "colsample_bytree": 1.0,
+        "min_child_weight": 1.0,
+        "gamma": 0.0,
+        "reg_alpha": 0.0,
+        "reg_lambda": 1.0,
+        "max_bin": 256,
+        "base_score": 0.0,
+        "max_depth": 3,
+        "n_estimators": 200
+      },
+      "models": {
+        "error_beta1": "d3_n200_lr005_error_beta1.json",
+        "error_beta2": "d3_n200_lr005_error_beta2.json",
+        "error_beta3": "d3_n200_lr005_error_beta3.json"
+      }
+    }
+  },
+  "data_note": "Historical macro features come from the existing revised-data snapshot."
+}
