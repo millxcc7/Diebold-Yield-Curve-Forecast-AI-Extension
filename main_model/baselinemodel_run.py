@@ -1,7 +1,11 @@
 import pandas as pd
 
-from nelson_siegel import COLUMNS, load_yields, estimate_betas, calculate_errors, MATURITIES, LAMBDA
-from ar_forecast import fit_ar_coef, forecast_betas, forecast_yield
+if __package__:
+    from .nelson_siegel import COLUMNS, load_yields, estimate_betas, calculate_errors, MATURITIES, LAMBDA
+    from .ar_forecast import fit_ar_coef, forecast_betas, forecast_yield
+else:
+    from nelson_siegel import COLUMNS, load_yields, estimate_betas, calculate_errors, MATURITIES, LAMBDA
+    from ar_forecast import fit_ar_coef, forecast_betas, forecast_yield
 
 from datetime import date, timedelta
 import os
