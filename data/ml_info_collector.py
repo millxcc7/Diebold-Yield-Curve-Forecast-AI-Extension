@@ -75,9 +75,11 @@ def ml_info_collector(base_month: str, api_key: str, first_origin: str = "2001-0
         inflation = macro.loc[prev, "inflation"] # not looking at change becasue because already core CPI YoY %
         unemployment_chg = macro.loc[prev, "unemployment"] - macro.loc[prev_3m, "unemployment"]  # 3m change of unemployment
         unemployment = macro.loc[prev, "unemployment"] # current unemployment rate
-        fed_funds_chg_3m = macro.loc[prev, "fed_funds"] - macro.loc[prev_3m, "fed_funds"] # 3m change of fed funds
-        fed_funds_chg_6m = macro.loc[prev, "fed_funds"] - macro.loc[prev_6m, "fed_funds"] # 6m change of fed funds
-        fed_funds = macro.loc[prev, "fed_funds"] # current fed funds rate
+        # Fed funds is known daily (no release delay) -> use the current month, no lag
+        fed_funds_chg_3m = macro.loc[current, "fed_funds"] - macro.loc[current - pd.offsets.MonthEnd(3), "fed_funds"] # 3m change of fed funds
+        fed_funds_chg_6m = macro.loc[current, "fed_funds"] - macro.loc[current - pd.offsets.MonthEnd(6), "fed_funds"] # 6m change of fed funds
+        fed_funds = macro.loc[current, "fed_funds"] # current fed funds rate
+
 
         # Sentiment is already assigned to the first month-end after each statement -> use current
         sentiment_score = sentiment.loc[current, "sentiment_score"]
@@ -119,7 +121,7 @@ def ml_info_collector(base_month: str, api_key: str, first_origin: str = "2001-0
 
 
 if __name__ == "__main__":
-    result = ml_info_collector("2026-10-31", api_key = os.getenv("FRED_API_KEY")) # PLEASE INPUT THE FRED API KEY
+    result = ml_info_collector("2026-09-30", api_key = os.getenv("FRED_API_KEY")) # PLEASE INPUT THE FRED API KEY
     result.to_csv("data/MLdatabase.csv", index=False) # printing out to csv  
 
     print(result.head(13).round(3))   # first origin's 12 rows + the start of the next
