@@ -5,18 +5,19 @@ from backtest_baseline import calculate_errors, compare_models, MATURITIES, RESU
 # Purpose: to score every ML version against the actual yields 
 # This saves the results to <scenario>/ml/ml_analysis.csv
 def ml_analysis(scenarios=("financial_crisis_2008", "economic_recovery_2014", "low_volatility_2017",
-                           "normal_policy_adjust_2019", "covid_2020", "rate_hikes_2022", "holdout_2025")):
+                           "normal_policy_adjust_2019", "covid_2020", "rate_hikes_2022", "holdout_2025"),
+                           ml_folder="ml", corrected_file="corrected_yields.csv"):
     # input: list of scenarios to analyze  
 
     # Loop through the scenarios and compare each ML version to baseline
     for k in scenarios:
 
         folder = os.path.join(RESULTS_DIR, k)
-        corrected_path = os.path.join(folder, "ml", "corrected", "corrected_yields.csv")
+        corrected_path = os.path.join(folder, ml_folder, "corrected", corrected_file)
 
         # Skip scenarios that don't have ML results yet
         if not os.path.exists(corrected_path):
-            print(f"Skipping {k}: no ml/corrected/corrected_yields.csv")
+            print(f"Skipping {k}: no {ml_folder}/corrected/{corrected_file}")
             continue
 
         # Actual and baseline yields (rows = dates, columns = maturities)
@@ -54,7 +55,7 @@ def ml_analysis(scenarios=("financial_crisis_2008", "economic_recovery_2014", "l
 
         # Combine the 6 versions and save
         analysis = pd.concat(all_versions, ignore_index=True)
-        output_path = os.path.join(folder, "ml", "ml_analysis.csv")
+        output_path = os.path.join(folder, ml_folder, "ml_analysis.csv")
         analysis.to_csv(output_path, index=False)
 
         print(f"\n{k}: saved {output_path}")
@@ -62,4 +63,5 @@ def ml_analysis(scenarios=("financial_crisis_2008", "economic_recovery_2014", "l
 
 
 if __name__ == "__main__":
-    ml_analysis()
+    ml_analysis() # beta version
+    ml_analysis(ml_folder="ml_yield", corrected_file="final_yield_curves.csv") # yield version
