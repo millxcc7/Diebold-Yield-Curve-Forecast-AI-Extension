@@ -1,0 +1,250 @@
+{
+  "created_at_utc": "2026-11-24T18:48:13.555084+00:00",
+  "dataset": {
+    "file": "C:\\Users\\milly\\Research Projects\\Fall 2026 FARMSA Yield Curve Prediction Model\\Diebold-Yield-Curve-Forecast-AI-Extension\\data\\MLyielddatabase.csv",
+    "sha256": "945fe48352daa405bcf94c90a6fd2b8f321241da3a519ba51c6d3b50dbf42c2a",
+    "n_rows": 3630
+  },
+  "features": [
+    "k",
+    "yield_3m_origin",
+    "yield_6m_origin",
+    "yield_12m_origin",
+    "yield_24m_origin",
+    "yield_36m_origin",
+    "yield_60m_origin",
+    "yield_84m_origin",
+    "yield_120m_origin",
+    "inflation",
+    "unemployment_rate",
+    "unemployment_chg",
+    "fed_funds_rate",
+    "fed_funds_chg_3m",
+    "fed_funds_chg_6m",
+    "sentiment_score"
+  ],
+  "targets": [
+    "error_yield_3m",
+    "error_yield_6m",
+    "error_yield_12m",
+    "error_yield_24m",
+    "error_yield_36m",
+    "error_yield_60m",
+    "error_yield_84m",
+    "error_yield_120m"
+  ],
+  "error_definition": "actual_yield - Nelson_Siegel_AR_forecast_yield",
+  "prediction_units": "percentage points",
+  "training": {
+    "cutoff": "2008-08-31",
+    "rule": "target <= forecast_origin",
+    "n_rows": 1026,
+    "first_realized_target": "2001-02-28",
+    "last_realized_target": "2008-08-31"
+  },
+  "prediction": {
+    "origin": "2008-08-31",
+    "horizon": 12,
+    "first_target": "2008-09-30",
+    "last_target": "2009-08-31"
+  },
+  "seed": 42,
+  "n_models": 48,
+  "training_seconds": 17.109000000004016,
+  "versions": {
+    "python": "3.12.3",
+    "numpy": "2.0.1",
+    "pandas": "3.0.3",
+    "xgboost": "3.4.1",
+    "scikit-learn": "1.9.1"
+  },
+  "configurations": {
+    "d2_n100_lr005": {
+      "parameters": {
+        "objective": "reg:squarederror",
+        "booster": "gbtree",
+        "tree_method": "hist",
+        "device": "cpu",
+        "learning_rate": 0.05,
+        "random_state": 42,
+        "n_jobs": 1,
+        "subsample": 1.0,
+        "colsample_bytree": 1.0,
+        "min_child_weight": 1.0,
+        "gamma": 0.0,
+        "reg_alpha": 0.0,
+        "reg_lambda": 1.0,
+        "max_bin": 256,
+        "base_score": 0.0,
+        "max_depth": 2,
+        "n_estimators": 100
+      },
+      "models": {
+        "error_yield_3m": "d2_n100_lr005_error_yield_3m.json",
+        "error_yield_6m": "d2_n100_lr005_error_yield_6m.json",
+        "error_yield_12m": "d2_n100_lr005_error_yield_12m.json",
+        "error_yield_24m": "d2_n100_lr005_error_yield_24m.json",
+        "error_yield_36m": "d2_n100_lr005_error_yield_36m.json",
+        "error_yield_60m": "d2_n100_lr005_error_yield_60m.json",
+        "error_yield_84m": "d2_n100_lr005_error_yield_84m.json",
+        "error_yield_120m": "d2_n100_lr005_error_yield_120m.json"
+      }
+    },
+    "d2_n150_lr005": {
+      "parameters": {
+        "objective": "reg:squarederror",
+        "booster": "gbtree",
+        "tree_method": "hist",
+        "device": "cpu",
+        "learning_rate": 0.05,
+        "random_state": 42,
+        "n_jobs": 1,
+        "subsample": 1.0,
+        "colsample_bytree": 1.0,
+        "min_child_weight": 1.0,
+        "gamma": 0.0,
+        "reg_alpha": 0.0,
+        "reg_lambda": 1.0,
+        "max_bin": 256,
+        "base_score": 0.0,
+        "max_depth": 2,
+        "n_estimators": 150
+      },
+      "models": {
+        "error_yield_3m": "d2_n150_lr005_error_yield_3m.json",
+        "error_yield_6m": "d2_n150_lr005_error_yield_6m.json",
+        "error_yield_12m": "d2_n150_lr005_error_yield_12m.json",
+        "error_yield_24m": "d2_n150_lr005_error_yield_24m.json",
+        "error_yield_36m": "d2_n150_lr005_error_yield_36m.json",
+        "error_yield_60m": "d2_n150_lr005_error_yield_60m.json",
+        "error_yield_84m": "d2_n150_lr005_error_yield_84m.json",
+        "error_yield_120m": "d2_n150_lr005_error_yield_120m.json"
+      }
+    },
+    "d2_n200_lr005": {
+      "parameters": {
+        "objective": "reg:squarederror",
+        "booster": "gbtree",
+        "tree_method": "hist",
+        "device": "cpu",
+        "learning_rate": 0.05,
+        "random_state": 42,
+        "n_jobs": 1,
+        "subsample": 1.0,
+        "colsample_bytree": 1.0,
+        "min_child_weight": 1.0,
+        "gamma": 0.0,
+        "reg_alpha": 0.0,
+        "reg_lambda": 1.0,
+        "max_bin": 256,
+        "base_score": 0.0,
+        "max_depth": 2,
+        "n_estimators": 200
+      },
+      "models": {
+        "error_yield_3m": "d2_n200_lr005_error_yield_3m.json",
+        "error_yield_6m": "d2_n200_lr005_error_yield_6m.json",
+        "error_yield_12m": "d2_n200_lr005_error_yield_12m.json",
+        "error_yield_24m": "d2_n200_lr005_error_yield_24m.json",
+        "error_yield_36m": "d2_n200_lr005_error_yield_36m.json",
+        "error_yield_60m": "d2_n200_lr005_error_yield_60m.json",
+        "error_yield_84m": "d2_n200_lr005_error_yield_84m.json",
+        "error_yield_120m": "d2_n200_lr005_error_yield_120m.json"
+      }
+    },
+    "d3_n100_lr005": {
+      "parameters": {
+        "objective": "reg:squarederror",
+        "booster": "gbtree",
+        "tree_method": "hist",
+        "device": "cpu",
+        "learning_rate": 0.05,
+        "random_state": 42,
+        "n_jobs": 1,
+        "subsample": 1.0,
+        "colsample_bytree": 1.0,
+        "min_child_weight": 1.0,
+        "gamma": 0.0,
+        "reg_alpha": 0.0,
+        "reg_lambda": 1.0,
+        "max_bin": 256,
+        "base_score": 0.0,
+        "max_depth": 3,
+        "n_estimators": 100
+      },
+      "models": {
+        "error_yield_3m": "d3_n100_lr005_error_yield_3m.json",
+        "error_yield_6m": "d3_n100_lr005_error_yield_6m.json",
+        "error_yield_12m": "d3_n100_lr005_error_yield_12m.json",
+        "error_yield_24m": "d3_n100_lr005_error_yield_24m.json",
+        "error_yield_36m": "d3_n100_lr005_error_yield_36m.json",
+        "error_yield_60m": "d3_n100_lr005_error_yield_60m.json",
+        "error_yield_84m": "d3_n100_lr005_error_yield_84m.json",
+        "error_yield_120m": "d3_n100_lr005_error_yield_120m.json"
+      }
+    },
+    "d3_n150_lr005": {
+      "parameters": {
+        "objective": "reg:squarederror",
+        "booster": "gbtree",
+        "tree_method": "hist",
+        "device": "cpu",
+        "learning_rate": 0.05,
+        "random_state": 42,
+        "n_jobs": 1,
+        "subsample": 1.0,
+        "colsample_bytree": 1.0,
+        "min_child_weight": 1.0,
+        "gamma": 0.0,
+        "reg_alpha": 0.0,
+        "reg_lambda": 1.0,
+        "max_bin": 256,
+        "base_score": 0.0,
+        "max_depth": 3,
+        "n_estimators": 150
+      },
+      "models": {
+        "error_yield_3m": "d3_n150_lr005_error_yield_3m.json",
+        "error_yield_6m": "d3_n150_lr005_error_yield_6m.json",
+        "error_yield_12m": "d3_n150_lr005_error_yield_12m.json",
+        "error_yield_24m": "d3_n150_lr005_error_yield_24m.json",
+        "error_yield_36m": "d3_n150_lr005_error_yield_36m.json",
+        "error_yield_60m": "d3_n150_lr005_error_yield_60m.json",
+        "error_yield_84m": "d3_n150_lr005_error_yield_84m.json",
+        "error_yield_120m": "d3_n150_lr005_error_yield_120m.json"
+      }
+    },
+    "d3_n200_lr005": {
+      "parameters": {
+        "objective": "reg:squarederror",
+        "booster": "gbtree",
+        "tree_method": "hist",
+        "device": "cpu",
+        "learning_rate": 0.05,
+        "random_state": 42,
+        "n_jobs": 1,
+        "subsample": 1.0,
+        "colsample_bytree": 1.0,
+        "min_child_weight": 1.0,
+        "gamma": 0.0,
+        "reg_alpha": 0.0,
+        "reg_lambda": 1.0,
+        "max_bin": 256,
+        "base_score": 0.0,
+        "max_depth": 3,
+        "n_estimators": 200
+      },
+      "models": {
+        "error_yield_3m": "d3_n200_lr005_error_yield_3m.json",
+        "error_yield_6m": "d3_n200_lr005_error_yield_6m.json",
+        "error_yield_12m": "d3_n200_lr005_error_yield_12m.json",
+        "error_yield_24m": "d3_n200_lr005_error_yield_24m.json",
+        "error_yield_36m": "d3_n200_lr005_error_yield_36m.json",
+        "error_yield_60m": "d3_n200_lr005_error_yield_60m.json",
+        "error_yield_84m": "d3_n200_lr005_error_yield_84m.json",
+        "error_yield_120m": "d3_n200_lr005_error_yield_120m.json"
+      }
+    }
+  },
+  "data_note": "Historical features and targets come from the existing revised-data snapshot."
+}
